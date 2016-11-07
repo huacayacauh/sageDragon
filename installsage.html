@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Language" content="en-us" />
+<title>/a8IdzHa2Li</title>
+</head>
+<body><ul><li>/* READ ME INSTALLATION DE SAGE */<br/><br
+/><br/><br
+/></li></ul
+>1-Télécharger le bon fichier sage. Seulement la version 7.3 et faire très attention a votre distribution de Unix. Sinon ça va tout gacher.<br
+/><br
+/>1Go d'espace<br
+/><a href="http://www.sagemath.org/download-source.html">http://www.sagemath.org/download-source.html</a><br
+/><br
+/><br
+/>2-Vérifier que vous possédez les applications nécessaires pour pouvoir Make le fichier:<br
+/><br
+/>Indispensable :&nbsp;<br
+/>sudo apt-get install binutils gcc make m4 perl tar git<br
+/>sudo apt-get install binutils gcc g++ gfortran make m4 perl tar git<br
+/>sudo apt-get install libssl libssl-dev<br
+/><br
+/><br
+/>facultatif mais rajoute des animations<br
+/>sudo apt-get install texlive&nbsp;&nbsp;&nbsp;<br
+/><br
+/><br
+/>3-Déplacer le fichier télécharger dans un répertoire, personnellement, je l'ai mis dans /home.<br
+/>ATTENTION : il ne doit y avoir aucun accent dans les dossiers dans lequel il se trouve.&nbsp;<br
+/>En faite, le chemin ca etre stocké dans une variable, et python ne reconnait pas de base les caracteres speciaux, a moins de rajouter le format utf-8 dans chaqu'un des fichiers pythons qui sont trop nombreux.<br
+/><br
+/><br
+/>4-Ensuite se placer dans le répertoire et décompresser avec :&nbsp;<br
+/>tar xvf nomdufichier<br
+/><br
+/>Cette opération prend un moment, soyez patient.<br
+/><br
+/><br
+/><br
+/>5-Déplacez vous dans le répertoire SageMath, et lancez la commande Make.<br
+/><br
+/>Attention cette opération prend énormément de temps. Sur mon PC portable (i3,4go de ram) ça m'a pris exactement 2h27 minutes. Prévoyez un film xD<br
+/><br
+/><br
+/>7- Se placer dans sageMath et faire ./sage, et normalement le truc se lance<br
+/><br
+/>8- ecrire quit pour quitter, et lancer ./sage -n jupyter pour pouvoir lancer jupyter<br
+/><br
+/><br
+/>Note importante : Vous ne pouvez faire l'installation qu'une seule fois, sinon il faut recommencer à partir de l'étape 3. Il&nbsp; y a un script qui installe les binary qui ne se fait qu'une seule fois.. Si jamais vous rencontrez des erreures, il faut repérer les erreur d'installations et les régler dans le terminal.<br
+/><br
+/><br
+/>Trucs fréquents :<br
+/>- sage requiere ssl instead of HTMLS ou un truc du genre&nbsp; = probleme lors de l'install de open-ssl<br
+/>-permission denieds = prob de permission = repérer le fichier et faire un chmod a+r du fichier.<br
+/>ou chmod - R a+r nomrep pour appliquer ça de façon recurisve a tous le contenu du rep<br
+/>SI jamais le dossier commence par .NOMREP c'est que c'est un fichier caché, et ils ne sont pas affectés par chmod. Dans ces cas la utiliser chown a+r ou chown -R<br
+/><br
+/><br
+/>Pour d'autres erreurs, on verra ça ensemble lundi<br
+/><br
+/></body>
+</html>

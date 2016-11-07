@@ -1,0 +1,40 @@
+<script type="text/javascript">
+// Paramètres :
+// zoneText => L'élément <zoneText>
+// nb_x => Nombre de cases en largeur
+// nb_y => Nombre de cases en hauteur
+// f => Fonction a exécuter au clic. Recevra les coordonnées x et y de la case cliquée
+ 
+var handlezoneTextClick = function (div, nb_x, nb_y, f) {
+ 
+    // Calcule les coordonnées d'un événement par rapport à un élément
+    var offset = function (el, event) {
+        var ox = -el.offsetLeft,
+            oy = -el.offsetTop;
+        while (el = el.offsetParent) {
+                ox += el.scrollLeft - el.offsetLeft;
+                oy += el.scrollTop - el.offsetTop;
+            }
+        return [event.clientX + ox, event.clientY + oy];
+    };
+     
+    // Au clic sur la zoneText
+    div.onclick = function (e) {
+        // On récupère les coordonnées relatives au zoneText
+        var coords = offset(zoneText, e),
+            x = Math.floor(coords[0] / zoneText.width * nb_x), // et on convertit en "coordonnées de case"
+            y = Math.floor(coords[1] / zoneText.height * nb_y);
+        // On appelle la fonction en lui passant les coordonnées
+        f(x, y);
+    };
+};
+window.onload = function () {
+    var zoneText = document.getElementById('zoneText');
+    zoneText.width = zoneText.height = 320;
+     
+    handlezoneTextClick(zoneText, 10, 10, function (x, y) {
+        alert('coordonnées = ' + x + ',' + y); // Affichera entre (0,0) et (9,9) selon la position du clic
+    });
+};
+</script>
+
