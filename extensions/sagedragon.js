@@ -15,29 +15,7 @@ define( function () {
        alert("SageDragon est activé");
     };
     
-    var update_sageDragon_link = function(sageDragon_id) {
-        if (!IPython.notebook) return;
-        
-        if (!sageDragon_id) {
-            sageDragon_id = IPython.notebook.metadata.sageDragon_id;
-        } else {
-            IPython.notebook.metadata.sageDragon_id = sageDragon_id;
-        }
-        if (!sageDragon_id) {
-            return;
-        }
-        var toolbar = IPython.toolbar.element;
-        var link = toolbar.find("a#nbviewer");
-        if ( ! link.length ) {
-            link = $('<a id="nbviewer" target="_blank"/>');
-            toolbar.append(
-                $('<span id="nbviewer_span"/>').append(link)
-            );
-        }
-    
-        link.attr("href", "https://nbviewer.jupyter.org/" + sageDragon_id);
-        link.text("https://nbviewer.jupyter.org/" + sageDragon_id);
-    };
+   
 
     var sageDragon_button = function () {
         if (!IPython.toolbar) {
@@ -54,13 +32,10 @@ define( function () {
                 },
             ]);
         }
-        update_sageDragon_link();
     };
     
     var load_ipython_extension = function () {
         sageDragon_button();
-        update_sageDragon_link();
-        $([IPython.events]).on("notebook_loaded.Notebook", function () {update_sageDragon_link();});
     };
     
     return {
