@@ -1,12 +1,12 @@
 Importer un script dans NB extension :
 
 import notebook.nbextensions
-notebook.nbextensions.install_nbextension('LIEN_DU_JS', user=True)
+notebook.nbextensions.install_nbextension('local/lib/python2.7/site-packages/notebook/sageDragon/extensions', user=True)
 
 activer le script 
 
 %%javascript
-Jupyter.utils.load_extensions('NOM_EXT_JS')
+Jupyter.utils.load_extensions('sagedragon')
 
 
 extension automatique a chaque démarrage 
