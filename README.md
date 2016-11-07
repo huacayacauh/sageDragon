@@ -9,3 +9,6 @@ DragonBox est un jeu éducatif visant à enseigner l’algèbre de façon ludiqu
 <!-- Include header sageDragon ---------------------------->
 {% include base_url + "/sageDragon/templates/header.html" %}
 <!--------------------------------------------------------->
+
+# need to ignore minified
+ignore_minified_js
