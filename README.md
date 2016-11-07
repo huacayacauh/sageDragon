@@ -12,3 +12,6 @@ DragonBox est un jeu éducatif visant à enseigner l’algèbre de façon ludiqu
 
 # need to ignore minified
 ignore_minified_js
+./sage -n jupyter local/lib/python2.7/site-packages/notebook  --NotebookApp.ignore_minified_js=True
+
+
