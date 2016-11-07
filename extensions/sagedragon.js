@@ -8,11 +8,18 @@ require(["nbextensions/sageDragon"], function (sageDragon_extension) {
 });
 
 */
+var activ = false;
 define( function () {
-    
+
     var sageDragon_notebook = function () {
-       Jupyter.notebook.kernel.execute("%display latex");
-       alert("SageDragon est activé");
+
+	if(activ == false){
+	       Jupyter.notebook.kernel.execute("%display latex");
+		activ = true;
+	       alert("SageDragon est activé");
+	}else{
+		alert("SageDragon est déja activé");	
+	}
     };
     
    

@@ -20,6 +20,8 @@ notebook.nbextensions.install_nbextension('local/lib/python2.7/site-packages/not
 %%javascript
 Jupyter.utils.load_extensions('sagedragon')
 
+#clone repositories path
+local/lib/python2.7/site-packages/notebook/sageDragon
 
 
 
