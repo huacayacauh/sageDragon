@@ -1,0 +1,21 @@
+Importer un script dans NB extension :
+
+import notebook.nbextensions
+notebook.nbextensions.install_nbextension('LIEN_DU_JS', user=True)
+
+activer le script 
+
+%%javascript
+Jupyter.utils.load_extensions('NOM_EXT_JS')
+
+
+extension automatique a chaque démarrage 
+from notebook.services.config import ConfigManager
+cm = ConfigManager()
+cm.update('notebook', {"load_extensions": {"NOM_EXT_JS": True}})
+
+arreter le demarrage auto 
+from notebook.services.config import ConfigManager
+cm = ConfigManager()
+# update with None, not False, to disable auto loading
+cm.update('notebook', {"load_extensions": {"NOM_EXT_JS": None}})
