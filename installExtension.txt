@@ -1,7 +1,7 @@
 Importer un script dans NB extension :
 
 import notebook.nbextensions
-notebook.nbextensions.install_nbextension('local/lib/python2.7/site-packages/notebook/sageDragon/extensions', user=True)
+notebook.nbextensions.install_nbextension('local/lib/python2.7/site-packages/notebook/sageDragon/extensions/sagedragon.js', user=True)
 
 activer le script 
 
