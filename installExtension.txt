@@ -12,10 +12,10 @@ Jupyter.utils.load_extensions('sagedragon')
 extension automatique a chaque démarrage 
 from notebook.services.config import ConfigManager
 cm = ConfigManager()
-cm.update('notebook', {"load_extensions": {"NOM_EXT_JS": True}})
+cm.update('notebook', {"load_extensions": {"sagedragon": True}})
 
 arreter le demarrage auto 
 from notebook.services.config import ConfigManager
 cm = ConfigManager()
 # update with None, not False, to disable auto loading
-cm.update('notebook', {"load_extensions": {"NOM_EXT_JS": None}})
+cm.update('notebook', {"load_extensions": {"sagedragon": None}})
