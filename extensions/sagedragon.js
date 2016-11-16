@@ -10,10 +10,16 @@
  */
 
 
-define(function () {
+define(/*['../../static/notebook/js/outputarea',
+        '../../static/notebook/js/cell',
+	'../../static/notebook/js/codecell',
+	'../../static/notebook/js/notebook'
+], */function () {
+     
 
 
     /*Display latex et clear outputs*/
+
     var sageDragon_notebook = function () {
         Jupyter.notebook.kernel.execute("%display latex");
         Jupyter.dialog.modal({
@@ -21,14 +27,21 @@ define(function () {
             body: "",
             buttons: {"ok": {}}
         });
-
-        // on cherche le bouton run cell et on ajoute l'action onclick
-        //PROBLEME IL FAUT RÉUSIR A AFFICHER APRES LE OUTPUT DE MATHJAX ET NON AVANT
-        $('[title ="run cell, select below"]').click(function () {
-            alert($(".MJX_Assistive_MathML:last").text())
-        });
     };
 
+ 
+	
+
+	var afficher_Output = function () {
+		var cell = Jupyter.notebook.get_cell(Jupyter.notebook.get_selected_cells_indices());
+		var valeurOutput = JSON.stringify(cell.output_area.outputs[0].data["text/plain"]).replace(/\"/g,"");
+	Jupyter.dialog.modal({
+            title: valeurOutput,
+            body: "",
+            buttons: {"ok": {}}
+        });
+    };
+	
 
     var display_output = function () {
         $(".output_result").text(function (index, actuel) {
@@ -53,8 +66,26 @@ define(function () {
         }
     };
 
+     var afficherOutput_button = function () {
+        if (!IPython.toolbar) {
+            $([IPython.events]).on("app_initialized.NotebookApp", afficherOutput_button);
+            return;
+        }
+        if ($("#afficher_Output").length === 0) {
+            IPython.toolbar.add_buttons_group([
+                {
+                    'label': 'Use afficherOutput',
+                    'icon': 'fa-play-circle',
+                    'callback': afficher_Output,
+                    'id': 'afficher_Output'
+                },
+            ]);
+        }
+    };
+
     var load_ipython_extension = function () {
         sageDragon_button();
+	afficherOutput_button();
         activate_extension(self);
     };
 
