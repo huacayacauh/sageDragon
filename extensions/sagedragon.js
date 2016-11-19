@@ -10,98 +10,94 @@
  */
 
 
-define(/*['../../static/notebook/js/outputarea',
-        '../../static/notebook/js/cell',
-	'../../static/notebook/js/codecell',
-	'../../static/notebook/js/notebook'
-], */function () {
+define(
+
+function () {
      
 
-
-    /*Display latex et clear outputs*/
-
-    var sageDragon_notebook = function () {
-        Jupyter.notebook.kernel.execute("%display latex");
-        Jupyter.dialog.modal({
-            title: "sageDragon activé",
-            body: "",
-            buttons: {"ok": {}}
-        });
-    };
+    	/*Display latex et bouton start*/
+	var sageDragon_notebook = function () {
+		/*Affichage du latex*/
+		Jupyter.notebook.kernel.execute("%display latex");
+		/*Bouton start*/
+		 $('#maintoolbar:first').append('<div id=\"sageD_activated\"><div class=\" text-center container col-xs-2 \"><div class=\"alert alert-info\" role=\"alert\"><strong>SageDragon is now activated</strong></div><div id =\"content_sageD\"></div></div></div>');
+		/*AJouter le click sur une cellules*/
+		add_click_on_cell();
+	};
 
  
-	
 
-	var afficher_Output = function () {
-		var cell = Jupyter.notebook.get_cell(Jupyter.notebook.get_selected_cells_indices());
-		var valeurOutput = JSON.stringify(cell.output_area.outputs[0].data["text/plain"]).replace(/\"/g,"");
-	Jupyter.dialog.modal({
-            title: valeurOutput,
-            body: "",
-            buttons: {"ok": {}}
-        });
-    };
-	
+	/*Rend une cellule clickable*/
+	var add_click_on_cell = function(){
+			//Permet de rafraichir le DOM et d'ajouter nos fonctionnalités
+			$(document).on("append",".input_prompt",
+			    function(){
+				$(Items).chosen({disable_search_threshold: 100});
+				$("#Items_chosen").css({"width":"100px","position":"absolute","left":"5px","top":"20px"});
+			    }
+			);
+			
+			$("body").on('append','.input_prompt', function() {
+				$('.input_prompt').append("<button type=\"button\" class=\"btn btn-default\">Advanced</button>");
+			});
+		 	$("body").on('click','.input_prompt', function() {
+				var cell = Jupyter.notebook.get_cell(Jupyter.notebook.get_selected_cells_indices());
+				//var valeurOutput = JSON.stringify(cell.output_area.outputs[0].data["text/plain"]).replace(/\"/g,"");
 
-    var display_output = function () {
-        $(".output_result").text(function (index, actuel) {
-            alert('Output ' + (index + 1) + ' : ' + actuel)
-        });
-    };
+				// on crée une fenetre pour afficher les options
+				alert("ok");
+		 		
+			});
+	};
 
-    var sageDragon_button = function () {
-        if (!IPython.toolbar) {
-            $([IPython.events]).on("app_initialized.NotebookApp", sageDragon_button);
-            return;
+
+
+	/*Ajouter un bouton sageDragon*/
+    	var sageDragon_button = function () {
+		if (!IPython.toolbar) {
+		    $([IPython.events]).on("app_initialized.NotebookApp", sageDragon_button);
+		    return;
+		}
+		if ($("#sageDragon_notebook").length === 0) {
+		    IPython.toolbar.add_buttons_group([
+		        {
+		            'label': 'Use sageDragon',
+		            'icon': 'fa-play-circle',
+		            'callback': sageDragon_notebook,
+		            'id': 'sageDragon_notebook'
+		        },
+		    ]);
+		}
+    	};
+
+
+        var test = function(jupyter, $) {
+            $(jupyter.events).on("kernel_ready.Kernel", function () {
+                console.log("Auto-running all cells-below...");
+                jupyter.actions.call('jupyter-notebook:run-all-cells-below');
+                jupyter.actions.call('jupyter-notebook:save-notebook');
+            });
         }
-        if ($("#sageDragon_notebook").length === 0) {
-            IPython.toolbar.add_buttons_group([
-                {
-                    'label': 'Use sageDragon',
-                    'icon': 'fa-play-circle',
-                    'callback': sageDragon_notebook,
-                    'id': 'sageDragon_notebook'
-                },
-            ]);
-        }
-    };
 
-     var afficherOutput_button = function () {
-        if (!IPython.toolbar) {
-            $([IPython.events]).on("app_initialized.NotebookApp", afficherOutput_button);
-            return;
-        }
-        if ($("#afficher_Output").length === 0) {
-            IPython.toolbar.add_buttons_group([
-                {
-                    'label': 'Use afficherOutput',
-                    'icon': 'fa-play-circle',
-                    'callback': afficher_Output,
-                    'id': 'afficher_Output'
-                },
-            ]);
-        }
-    };
+	var load_ipython_extension = function () {
+		var kernel = IPython.notebook.kernel;
+		/*Activer le module*/
+		sageDragon_button();
+		/*Activer l'extension*/
+		activate_extension(self);
+	};
 
-    var load_ipython_extension = function () {
-        sageDragon_button();
-	afficherOutput_button();
-        activate_extension(self);
-    };
-
-    var activate_extension = function (self) {
-        //Install JS extensions
-        path = os.path.abspath(os.path.join.dirname("notebook", os.path.padir));
-        install_nbextension(path, overwrite = True, user = True);
-        js_cm = ConfigManager();
-        js_cm.update('notebook', {"load_extensions": {'sageDragon/static/js/notebook ': True}})
-    };
-    return {
-        load_ipython_extension: load_ipython_extension
-    };
-
-
-
+	var activate_extension = function (self) {
+		//Install JS extensions
+			path = os.path.abspath(os.path.join.dirname("notebook", os.path.padir));
+			install_nbextension(path, overwrite = True, user = True);
+			js_cm = ConfigManager();
+			// activer l'exte
+			js_cm.update('notebook', {"load_extensions": {'sageDragon/static/js/notebook ': True}})
+	};
+		return {
+		load_ipython_extension: load_ipython_extension
+	};
 });
 
 

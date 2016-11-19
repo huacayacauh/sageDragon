@@ -12,8 +12,9 @@ DragonBox est un jeu éducatif visant à enseigner l’algèbre de façon ludiqu
 
 #add module sageDragon
 
-import notebook.sageDragon
+import notebook.nbextensions
 notebook.nbextensions.install_nbextension('local/lib/python2.7/site-packages/notebook/sageDragon/extensions/sagedragon.js', user=True)
+
 
 <!--activer le script-->
 
