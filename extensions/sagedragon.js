@@ -9,48 +9,63 @@
  
  */
 
-
 define(
 
 function () {
-     
-
+     var boolean = false; // permet de connait l'état de notre module ( actvé, désactivé)
+     var idTextarea = 0;
     	/*Display latex et bouton start*/
 	var sageDragon_notebook = function () {
-		/*Affichage du latex*/
-		Jupyter.notebook.kernel.execute("%display latex");
-		/*Bouton start*/
-		 $('#maintoolbar:first').append('<div id=\"sageD_activated\"><div class=\" text-center container col-xs-2 \"><div class=\"alert alert-info\" role=\"alert\"><strong>SageDragon is now activated</strong></div><div id =\"content_sageD\"></div></div></div>');
-		/*AJouter le click sur une cellules*/
-		add_click_on_cell();
+		// Vérifier si l'utilisateur à déja activé le module
+		if(boolean == false){
+			/*Affichage du latex*/
+			Jupyter.notebook.kernel.execute("%display latex");
+			/*Bouton start*/
+			display_start_button();
+			//Display Advanced Button
+			display_button();
+			/*Affiche l' input de la cellule*/
+			click_on_button();	
+			// module activé		
+			boolean = true;
+		}
 	};
 
  
-
-	/*Rend une cellule clickable*/
-	var add_click_on_cell = function(){
-			//Permet de rafraichir le DOM et d'ajouter nos fonctionnalités
-			$(document).on("append",".input_prompt",
-			    function(){
-				$(Items).chosen({disable_search_threshold: 100});
-				$("#Items_chosen").css({"width":"100px","position":"absolute","left":"5px","top":"20px"});
-			    }
-			);
+	/*Display start button*/
+	var display_start_button = function(){
+		$('#maintoolbar:first').append('<div id=\"sageD_activated\"><div class=\" text-center container col-xs-2 \"><div class=\"alert alert-info\" role=\"alert\"><strong>SageDragon is now activated</strong></div><div id =\"content_sageD\"></div></div></div>');
 			
-			$("body").on('append','.input_prompt', function() {
-				$('.input_prompt').append("<button type=\"button\" class=\"btn btn-default\">Advanced</button>");
-			});
-		 	$("body").on('click','.input_prompt', function() {
-				var cell = Jupyter.notebook.get_cell(Jupyter.notebook.get_selected_cells_indices());
-				//var valeurOutput = JSON.stringify(cell.output_area.outputs[0].data["text/plain"]).replace(/\"/g,"");
-
-				// on crée une fenetre pour afficher les options
-				alert("ok");
-		 		
-			});
+	} 
+	
+	/*Display input cel*/
+	var click_on_button = function(){
+			//Permet de rafraichir le DOM et d'ajouter nos fonctionnalités
+	
+		$("body").on('click','button[title =\"sageButton\"]', function() {
+			var cell = Jupyter.notebook.get_cell(Jupyter.notebook.get_selected_cells_indices());
+			var valeurInput = cell.get_text();
+			// on crée une fenetre pour afficher les options
+			alert(valeurInput);
+		});
 	};
 
+	//Display Advanced Button
+	var display_button = function(){
+	// buttons
+	var buttons ="<div title=\"sage\" class =\"container\" style=\"border: 5px solid transparent\" ><div class=\"row\" <div class =\"col-xs-12\"><div class =\"col-xs-1\"><button title =\"sageButton\"type=\"button\" class=\"btn btn-info\">Factory</button></div><div class =\"col-xs-3\"><button title =\"sageButton\"type=\"button\" class=\"btn btn-warning\">Resolve</button></div></div></div></div>";
 
+		// check the focus
+		$('body').on('focusin', '.selected .input_area', function(){
+			// check if the sage butons is write
+			if($('.selected > div[title !=\"sage\"]')){
+				// supprimer div 
+				$('.selected > div[title =\"sage\"').remove();
+				//Buttons à insérer
+				$('.selected').prepend(buttons);
+			}		
+		});	
+	}
 
 	/*Ajouter un bouton sageDragon*/
     	var sageDragon_button = function () {
@@ -58,6 +73,7 @@ function () {
 		    $([IPython.events]).on("app_initialized.NotebookApp", sageDragon_button);
 		    return;
 		}
+		
 		if ($("#sageDragon_notebook").length === 0) {
 		    IPython.toolbar.add_buttons_group([
 		        {
@@ -92,7 +108,7 @@ function () {
 			path = os.path.abspath(os.path.join.dirname("notebook", os.path.padir));
 			install_nbextension(path, overwrite = True, user = True);
 			js_cm = ConfigManager();
-			// activer l'exte
+			// activer l'extension
 			js_cm.update('notebook', {"load_extensions": {'sageDragon/static/js/notebook ': True}})
 	};
 		return {
