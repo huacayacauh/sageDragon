@@ -95,6 +95,7 @@ function () {
             });
         }
 
+
 	var load_ipython_extension = function () {
 		var kernel = IPython.notebook.kernel;
 		/*Activer le module*/
