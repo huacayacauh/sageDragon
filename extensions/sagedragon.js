@@ -12,8 +12,81 @@
 define(
 
 function () {
-     var boolean = false; // permet de connait l'état de notre module ( actvé, désactivé)
-     var idTextarea = 0;
+     var boolean = false; // permet de connaitre l'état de notre module ( actvé, désactivé)
+
+	
+  	var create_var = function (){
+	            var cell = arguments[0];
+	            var text = cell.get_text();
+	            var valide_function_to_factor = /([^a-zA-Z])/g;
+	            var resultat = text.replace(valide_function_to_factor, "").split('');
+
+	            for (var iter = 0; iter < resultat.length; iter++) 
+	            {
+	                var new_var = resultat[iter] + "=var('"+resultat[iter]+"')";
+	                Jupyter.notebook.kernel.execute(new_var);
+	            }
+		return resultat;
+	};
+
+	var factor = function (cell) 
+	{
+	        var valide_function_to_factor = /^([a-z]|([0-9]*)+)(([+\-*\/]([a-z]|([0-9]*)+))*)?/g;
+	        var text = cell.get_text();
+	        var valide = text.replace(valide_function_to_factor, "");
+
+	        if(!valide && text.trim()!="")
+	        {
+		/*Création des variables*/
+	             create_var(cell);
+	             if(cell.output_area.outputs[0]!=undefined){
+	                 cell.output_area.clear_output();
+			}
+	             Jupyter.notebook.kernel.execute("factor("+text+");", cell.get_callbacks(), {silent:false} );
+	        }
+	        else
+	        {
+	        	alert("Formule non valide");
+	    	}
+	};
+
+	var solve = function (cell) 
+	{
+	        var valide_function_to_solve = /^([a-z]|([0-9]*)+)(([+\-*\/]([a-z]|([0-9]*)+))*)?/g;
+	        var text = cell.get_text();
+	        var valide = text.replace(valide_function_to_solve, "");
+		var vars;
+		var varsButtons ="";
+
+	        if(!valide && text.trim()!="")
+	        {
+		/*Création des variables*/
+	            vars = create_var(cell);
+		/*Propositions des variables*/
+			/*Jupyter.dialog.modal({
+				body : 'Choose the variable',
+				title : "Variables",
+				buttons :{
+					'ok' :{},
+					'pas ok' :{},
+				}
+		});*/
+			if(vars[0] != undefined){
+			     if(cell.output_area.outputs[0]!=undefined){
+			         cell.output_area.clear_output();
+				}
+			     Jupyter.notebook.kernel.execute("solve("+text+","+vars[0]+");", cell.get_callbacks(), {silent:false} );
+			}else{
+				alert("Formule non valide");
+			}
+	        }
+	        else
+	        {
+	        	alert("Formule non valide");
+	    	}
+	};
+
+
     	/*Display latex et bouton start*/
 	var sageDragon_notebook = function () {
 		// Vérifier si l'utilisateur à déja activé le module
@@ -41,19 +114,26 @@ function () {
 	/*Display input cel*/
 	var click_on_button = function(){
 			//Permet de rafraichir le DOM et d'ajouter nos fonctionnalités
-	
-		$("body").on('click','button[title =\"sageButton\"]', function() {
+		// On écoute sur le bouton factor
+		$("body").on('click','button[title =\"sageButtonFactor\"]', function() {
 			var cell = Jupyter.notebook.get_cell(Jupyter.notebook.get_selected_cells_indices());
-			var valeurInput = cell.get_text();
-			// on crée une fenetre pour afficher les options
-			alert(valeurInput);
+
+			//On factorise notre entrée
+			factor(cell);
+		});
+		// On écoute sur le bouton solve
+		$("body").on('click','button[title =\"sageButtonSolve\"]', function() {
+			var cell = Jupyter.notebook.get_cell(Jupyter.notebook.get_selected_cells_indices());
+
+			//On factorise notre entrée
+			solve(cell);
 		});
 	};
 
 	//Display Advanced Button
 	var display_button = function(){
 	// buttons
-	var buttons ="<div title=\"sage\" class =\"container\" style=\"border: 5px solid transparent\" ><div class=\"row\" <div class =\"col-xs-12\"><div class =\"col-xs-1\"><button title =\"sageButton\"type=\"button\" class=\"btn btn-info\">Factory</button></div><div class =\"col-xs-3\"><button title =\"sageButton\"type=\"button\" class=\"btn btn-warning\">Resolve</button></div></div></div></div>";
+	var buttons ="<div title=\"sage\" class =\"container\" style=\"border: 5px solid transparent\" ><div class=\"row\" <div class =\"col-xs-12\"><div class =\"col-xs-1\"><button title =\"sageButtonFactor\"type=\"button\" class=\"btn btn-info\">Factor</button></div><div class =\"col-xs-3\"><button title =\"sageButtonSolve\"type=\"button\" class=\"btn btn-warning\">Solve</button></div></div></div></div>";
 
 		// check the focus
 		$('body').on('focusin', '.selected .input_area', function(){
