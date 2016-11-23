@@ -197,7 +197,7 @@ function () {
 			var cell = Jupyter.notebook.get_cell(Jupyter.notebook.get_selected_cells_indices());
 
 			//On diff notre entrée
-			diff(cell);
+			plot(cell);
 		});
 	};
 
