@@ -138,6 +138,7 @@ function () {
 		// check the focus
 		$('body').on('focusin', '.selected .input_area', function(){
 			// check if the sage butons is write
+				$('.unselected > div[title =\"sage\"').remove();		
 			if($('.selected > div[title !=\"sage\"]')){
 				// supprimer div 
 				$('.selected > div[title =\"sage\"').remove();
