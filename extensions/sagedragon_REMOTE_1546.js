@@ -50,12 +50,9 @@ function () {
 	    	}
 	};
 
-
+	// Créer un boite de dialog
 	var createDialog = function(title, text, options) {
-		if(!popup){
-		popup = true;
-    		return $("<div class='dialog' title='" + title + "'><p>" + text + "</p></div>").dialog(options);
-		}
+    		return $("<div class='modal-dialog modal-lg' title='" + title + "'><p>" + text + "</p></div>").dialog(options);
 	}
 
 	var solve = function (cell) 
@@ -64,23 +61,49 @@ function () {
 	        var text = cell.get_text();
 	        var valide = text.replace(valide_function_to_solve, "");
 		var vars;
-		var varsButtons ="";
-	
+		var varsButtons;
+		var input;
+		var inputTab =[];
+		var find;
 
-		
 		if(!valide && text.trim()!="")
 	        {
 		/*Création des variables*/
 	            vars = create_var(cell);
-		/*Propositions des variables*/
-		createDialog("Choose your variable",);
-
 			if(vars[0] != undefined){
 			     if(cell.output_area.outputs[0]!=undefined){
 			         cell.output_area.clear_output();
 				}
 
-			
+				/*Propositions des variables*/
+				var b = 0;
+				for (i = 0; i < vars.length; i++) {
+   					 
+					for (a = 0; a < inputTab.length; a++) {
+						if(inputTab[a] == vars[i]){
+							find = true;
+						}
+					}
+					if(find != true){
+						inputTab[b] = vars[i];
+						b ++;
+					}else{
+						find = false;
+					}
+				}
+				// On créer notre input
+				input = "<div class ='col-xs-12'><b>Choose the variable in order to solve :<br><center>"+text+"</center></b></div>";
+				
+
+				var buttons = {} ;
+				for(i = 0 ; i < inputTab.length; i ++){
+					buttons[inputTab[i]] = solvExec(text,inputTab[i],cell){};
+				}	 
+
+				// creation de la boite de dialog
+				var options = {height: 'auto',width: 'auto', buttons:buttons}
+				createDialog("Choose your variable",input,options);
+
 			     Jupyter.notebook.kernel.execute("solve("+text+","+vars[0]+");", cell.get_callbacks(), {silent:false} );
 			}else{
 				alert("Formule non valide");
@@ -170,7 +193,7 @@ function () {
  
 	/*Display start button*/
 	var display_start_button = function(){
-		$('#maintoolbar:first').append('<div style="width:800px; margin:0 auto;" id=\"sageD_activated\"><div class=\" text-center container col-xs-2 \"><div class=\"alert alert-info\" role=\"alert\"><strong>SageDragon is now activated</strong></div><div id =\"content_sageD\"></div></div></div>');
+		$('#maintoolbar:first').append('<div class =\"text-center\"><div class=\" text-center container col-xs-2 \"><div class=\"alert alert-info\" role=\"alert\"><strong>SageDragon is now activated</strong></div><div id =\"content_sageD\"></div></div></div>');
 			
 	} 
 	
@@ -211,8 +234,7 @@ function () {
 	var display_button = function(){
 	// buttons
 
-	var buttons ="<div title=\"sage\" class =\"container\" style=\"border: 5px solid transparent\" ><div class=\"row\" <div class =\"col-xs-12\"><div class =\"col-xs-1\"><button title =\"sageButtonFactor\"type=\"button\" class=\"btn btn-info\">Factor</button></div><div class =\"col-xs-1\"><button title =\"sageButtonSolve\"type=\"button\" class=\"btn btn-warning\">Solve</button></div><div class =\"col-xs-1\"><button title =\"sageButtonPlot\"type=\"button\" class=\"btn btn-danger\">Plot</button></div><button title =\"sageButtonDiff\"type=\"button\" class=\"btn btn-default\">Diff</button></div></div></div></div>";
-
+	var buttons ="<div title=\"sage\" class =\"container\" style=\"border: 5px solid transparent\" ><div class=\"row\"> <div class =\"col-xs-12\"><div class =\"col-xs-1\"><button title =\"sageButtonFactor\"type=\"button\" class=\"btn btn-info\">Factor</button></div><div class =\"col-xs-1\"><button title =\"sageButtonSolve\"type=\"button\" class=\"btn btn-warning\">Solve</button></div><div class =\"col-xs-1\"><button title =\"sageButtonPlot\"type=\"button\" class=\"btn btn-danger\">Plot</button></div><div class =\"col-xs-1\"><button title =\"sageButtonDiff\"type=\"button\" class=\"btn btn-default\">Diff</button></div></div></div>";
 
 		// check the focus
 		$('body').on('focusin', '.selected .input_area', function(){

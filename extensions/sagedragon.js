@@ -73,6 +73,7 @@ function () {
 	        {
 		/*Création des variables*/
 	            vars = create_var(cell);
+
 			if(vars[0] != undefined){
 			     if(cell.output_area.outputs[0]!=undefined){
 			         cell.output_area.clear_output();
@@ -94,8 +95,24 @@ function () {
 						find = false;
 					}
 				}
+
+				// On créer notre input
+				input = "<div class ='col-xs-12'><b>Choose the variable in order to solve :<br><center>"+text+"</center></b></div>";
 				
-				
+
+				var buttons = {} ;
+				for(i = 0 ; i < inputTab.length; i ++){
+					var val = inputTab[i];
+					buttons[inputTab[i]] = function(val){
+							solvExec(text,val,cell);
+							$(this).dialog('close'); 					
+						};
+				}	 
+
+				// creation de la boite de dialog
+				var options = {height: 'auto',width: 'auto', buttons:buttons}
+				createDialog("Choose your variable",input,options);
+
 			}else{
 				alert("Formule non valide");
 			}
