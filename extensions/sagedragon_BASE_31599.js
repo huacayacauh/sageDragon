@@ -50,92 +50,32 @@ function () {
 	    	}
 	};
 
-
-	var createDialog = function(title, text, options) {
-    		return $("<div class='dialog' title='" + title + "'><p>" + text + "</p></div>").dialog(options);
-	}
-
 	var solve = function (cell) 
-	{	
+	{
 	        var valide_function_to_solve = /^([a-z]|([0-9]*)+)(([+\-*\/]([a-z]|([0-9]*)+))*)?/g;
 	        var text = cell.get_text();
 	        var valide = text.replace(valide_function_to_solve, "");
 		var vars;
 		var varsButtons ="";
-	
 
-		
-		if(!valide && text.trim()!="")
+	        if(!valide && text.trim()!="")
 	        {
 		/*Création des variables*/
 	            vars = create_var(cell);
 		/*Propositions des variables*/
-		createDialog("Choose your variable",);
-
+			/*Jupyter.dialog.modal({
+				body : 'Choose the variable',
+				title : "Variables",
+				buttons :{
+					'ok' :{},
+					'pas ok' :{},
+				}
+		});*/
 			if(vars[0] != undefined){
 			     if(cell.output_area.outputs[0]!=undefined){
 			         cell.output_area.clear_output();
 				}
-
-			
 			     Jupyter.notebook.kernel.execute("solve("+text+","+vars[0]+");", cell.get_callbacks(), {silent:false} );
-			}else{
-				alert("Formule non valide");
-			}
-	        }
-	        else
-	        {
-	        	alert("Formule non valide");
-	    	}
-	};
-
-	//Donne la dérivée
-	var diff = function (cell) 
-	{
-	        var valide_function_to_solve = /^([a-z]|([0-9]*)+)(([+\-*\/]([a-z]|([0-9]*)+))*)?/g;
-	        var text = cell.get_text();
-	        var valide = text.replace(valide_function_to_solve, "");
-		var vars;
-		var varsButtons ="";
-
-	        if(!valide && text.trim()!="")
-	        {
-		/*Création des variables*/
-	            vars = create_var(cell);
-			if(vars[0] != undefined){
-			     if(cell.output_area.outputs[0]!=undefined){
-			         cell.output_area.clear_output();
-				}
-			     Jupyter.notebook.kernel.execute("diff("+text+");", cell.get_callbacks(), {silent:false} );
-			}else{
-				alert("Formule non valide");
-			}
-	        }
-	        else
-	        {
-	        	alert("Formule non valide");
-	    	}
-	};
-
-
-	//Affiche un repère
-	var plot = function (cell) 
-	{
-	        var valide_function_to_solve = /^([a-z]|([0-9]*)+)(([+\-*\/]([a-z]|([0-9]*)+))*)?/g;
-	        var text = cell.get_text();
-	        var valide = text.replace(valide_function_to_solve, "");
-		var vars;
-		var varsButtons ="";
-
-	        if(!valide && text.trim()!="")
-	        {
-		/*Création des variables*/
-	            vars = create_var(cell);
-			if(vars[0] != undefined){
-			     if(cell.output_area.outputs[0]!=undefined){
-			         cell.output_area.clear_output();
-				}
-			     Jupyter.notebook.kernel.execute("plot("+text+");", cell.get_callbacks(), {silent:false} );
 			}else{
 				alert("Formule non valide");
 			}
@@ -167,7 +107,7 @@ function () {
  
 	/*Display start button*/
 	var display_start_button = function(){
-		$('#maintoolbar:first').append('<div style="width:800px; margin:0 auto;" id=\"sageD_activated\"><div class=\" text-center container col-xs-2 \"><div class=\"alert alert-info\" role=\"alert\"><strong>SageDragon is now activated</strong></div><div id =\"content_sageD\"></div></div></div>');
+		$('#maintoolbar:first').append('<div id=\"sageD_activated\"><div class=\" text-center container col-xs-2 \"><div class=\"alert alert-info\" role=\"alert\"><strong>SageDragon is now activated</strong></div><div id =\"content_sageD\"></div></div></div>');
 			
 	} 
 	
@@ -187,29 +127,13 @@ function () {
 
 			//On factorise notre entrée
 			solve(cell);
-		});		
-		// On écoute sur le bouton Plot
-		$("body").on('click','button[title =\"sageButtonPlot\"]', function() {
-			var cell = Jupyter.notebook.get_cell(Jupyter.notebook.get_selected_cells_indices());
-
-			//On plot notre entrée
-			plot(cell);
-		});
-			// On écoute sur le bouton Diff
-		$("body").on('click','button[title =\"sageButtonDiff\"]', function() {
-			var cell = Jupyter.notebook.get_cell(Jupyter.notebook.get_selected_cells_indices());
-
-			//On diff notre entrée
-			diff(cell);
 		});
 	};
 
 	//Display Advanced Button
 	var display_button = function(){
 	// buttons
-
-	var buttons ="<div title=\"sage\" class =\"container\" style=\"border: 5px solid transparent\" ><div class=\"row\" <div class =\"col-xs-12\"><div class =\"col-xs-1\"><button title =\"sageButtonFactor\"type=\"button\" class=\"btn btn-info\">Factor</button></div><div class =\"col-xs-1\"><button title =\"sageButtonSolve\"type=\"button\" class=\"btn btn-warning\">Solve</button></div><div class =\"col-xs-1\"><button title =\"sageButtonPlot\"type=\"button\" class=\"btn btn-danger\">Plot</button></div><button title =\"sageButtonDiff\"type=\"button\" class=\"btn btn-default\">Diff</button></div></div></div></div>";
-
+	var buttons ="<div title=\"sage\" class =\"container\" style=\"border: 5px solid transparent\" ><div class=\"row\" <div class =\"col-xs-12\"><div class =\"col-xs-1\"><button title =\"sageButtonFactor\"type=\"button\" class=\"btn btn-info\">Factor</button></div><div class =\"col-xs-3\"><button title =\"sageButtonSolve\"type=\"button\" class=\"btn btn-warning\">Solve</button></div></div></div></div>";
 
 		// check the focus
 		$('body').on('focusin', '.selected .input_area', function(){

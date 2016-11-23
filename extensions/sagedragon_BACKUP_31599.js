@@ -207,9 +207,11 @@ function () {
 	//Display Advanced Button
 	var display_button = function(){
 	// buttons
-
+<<<<<<< HEAD
+	var buttons ="<div title=\"sage\" class =\"container\" style=\"border: 5px solid transparent\" ><div class=\"row\" <div class =\"col-xs-12\"><div class =\"col-xs-1\"><button title =\"sageButtonFactor\"type=\"button\" class=\"btn btn-info\">Factor</button></div><div class =\"col-xs-1\"><button title =\"sageButtonSolve\"type=\"button\" class=\"btn btn-warning\">Solve</button></div></div></div></div>";
+=======
 	var buttons ="<div title=\"sage\" class =\"container\" style=\"border: 5px solid transparent\" ><div class=\"row\" <div class =\"col-xs-12\"><div class =\"col-xs-1\"><button title =\"sageButtonFactor\"type=\"button\" class=\"btn btn-info\">Factor</button></div><div class =\"col-xs-1\"><button title =\"sageButtonSolve\"type=\"button\" class=\"btn btn-warning\">Solve</button></div><div class =\"col-xs-1\"><button title =\"sageButtonPlot\"type=\"button\" class=\"btn btn-danger\">Plot</button></div><button title =\"sageButtonDiff\"type=\"button\" class=\"btn btn-default\">Diff</button></div></div></div></div>";
-
+>>>>>>> aa4103b93fa9605c3cb3d4fbf15800ed5b221958
 
 		// check the focus
 		$('body').on('focusin', '.selected .input_area', function(){
