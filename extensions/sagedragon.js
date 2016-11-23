@@ -58,8 +58,11 @@ function () {
 	var solve = function (cell) 
 	{	
 	        var valide_function_to_solve = /^([a-z]|([0-9]*)+)(([+\-*\/]([a-z]|([0-9]*)+))*)?/g;
+		
+		// contenu input
 	        var text = cell.get_text();
 	        var valide = text.replace(valide_function_to_solve, "");
+
 		var vars;
 		var varsButtons;
 		var input;
@@ -91,18 +94,8 @@ function () {
 						find = false;
 					}
 				}
-				// On créer notre input
-				input = "<div class ='col-xs-12'><div class =\"col-xs-1\"><button title =\""+inputTab[0]+"\"type=\"button\" class=\"btn btn-default\">"+inputTab[0]+"</button></div>";
-				for (i = 1; i < inputTab.length; i++) {
-   					 input += "<div class =\"col-xs-1\"><button title =\""+inputTab[i]+"\"type=\"button\" class=\"btn btn-default\">"+inputTab[i]+"</button></div>";
-				}
-				input = input + "</div>";
 				
-				// creation de la boite de dialog
-				var options = {height: 'auto',width: 'auto'}
-				createDialog("Choose your variable",input,options);
-
-			     Jupyter.notebook.kernel.execute("solve("+text+","+vars[0]+");", cell.get_callbacks(), {silent:false} );
+				
 			}else{
 				alert("Formule non valide");
 			}
@@ -113,6 +106,12 @@ function () {
 	    	}
 	};
 
+	// Exécution solve 
+
+	var solvExec = function (text,varChosen,cell){
+		Jupyter.notebook.kernel.execute("solve("+text+","+varChosen+");", cell.get_callbacks(), {silent:false} );
+	}
+ 
 	//Donne la dérivée
 	var diff = function (cell) 
 	{
