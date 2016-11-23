@@ -50,31 +50,34 @@ function () {
 	    	}
 	};
 
+
+	var createDialog = function(title, text, options) {
+    		return $("<div class='dialog' title='" + title + "'><p>" + text + "</p></div>").dialog(options);
+	}
+
 	var solve = function (cell) 
-	{
+	{	
 	        var valide_function_to_solve = /^([a-z]|([0-9]*)+)(([+\-*\/]([a-z]|([0-9]*)+))*)?/g;
 	        var text = cell.get_text();
 	        var valide = text.replace(valide_function_to_solve, "");
 		var vars;
 		var varsButtons ="";
+	
 
-	        if(!valide && text.trim()!="")
+		
+		if(!valide && text.trim()!="")
 	        {
 		/*Création des variables*/
 	            vars = create_var(cell);
 		/*Propositions des variables*/
-			/*Jupyter.dialog.modal({
-				body : 'Choose the variable',
-				title : "Variables",
-				buttons :{
-					'ok' :{},
-					'pas ok' :{},
-				}
-		});*/
+		createDialog("Choose your variable",);
+
 			if(vars[0] != undefined){
 			     if(cell.output_area.outputs[0]!=undefined){
 			         cell.output_area.clear_output();
 				}
+
+			
 			     Jupyter.notebook.kernel.execute("solve("+text+","+vars[0]+");", cell.get_callbacks(), {silent:false} );
 			}else{
 				alert("Formule non valide");
@@ -133,7 +136,7 @@ function () {
 	//Display Advanced Button
 	var display_button = function(){
 	// buttons
-	var buttons ="<div title=\"sage\" class =\"container\" style=\"border: 5px solid transparent\" ><div class=\"row\" <div class =\"col-xs-12\"><div class =\"col-xs-1\"><button title =\"sageButtonFactor\"type=\"button\" class=\"btn btn-info\">Factor</button></div><div class =\"col-xs-3\"><button title =\"sageButtonSolve\"type=\"button\" class=\"btn btn-warning\">Solve</button></div></div></div></div>";
+	var buttons ="<div title=\"sage\" class =\"container\" style=\"border: 5px solid transparent\" ><div class=\"row\" <div class =\"col-xs-12\"><div class =\"col-xs-1\"><button title =\"sageButtonFactor\"type=\"button\" class=\"btn btn-info\">Factor</button></div><div class =\"col-xs-1\"><button title =\"sageButtonSolve\"type=\"button\" class=\"btn btn-warning\">Solve</button></div></div></div></div>";
 
 		// check the focus
 		$('body').on('focusin', '.selected .input_area', function(){
