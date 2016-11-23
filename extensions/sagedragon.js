@@ -92,14 +92,16 @@ function () {
 					}
 				}
 				// On créer notre input
-				input = "<div class ='col-xs-12'><div class =\"col-xs-1\"><button title =\""+inputTab[0]+"\"type=\"button\" class=\"btn btn-default\">"+inputTab[0]+"</button></div>";
-				for (i = 1; i < inputTab.length; i++) {
-   					 input += "<div class =\"col-xs-1\"><button title =\""+inputTab[i]+"\"type=\"button\" class=\"btn btn-default\">"+inputTab[i]+"</button></div>";
-				}
-				input = input + "</div>";
+				input = "<div class ='col-xs-12'><b>Choose the variable in order to solve :<br><center>"+text+"</center></b></div>";
 				
+
+				var buttons = {} ;
+				for(i = 0 ; i < inputTab.length; i ++){
+					buttons[inputTab[i]] = solvExec(text,inputTab[i],cell){};
+				}	 
+
 				// creation de la boite de dialog
-				var options = {height: 'auto',width: 'auto'}
+				var options = {height: 'auto',width: 'auto', buttons:buttons}
 				createDialog("Choose your variable",input,options);
 
 			     Jupyter.notebook.kernel.execute("solve("+text+","+vars[0]+");", cell.get_callbacks(), {silent:false} );
