@@ -40,6 +40,7 @@ function () {
 			}	
 		}, 200);
 	}
+	
 
 	//developpe les formules
 	var expand = function (cell) 
@@ -87,11 +88,9 @@ function () {
 
 	var solve = function (cell) 
 	{	
-	        var valide_function_to_solve = /^([a-z]|([0-9]*)+)(([+\-*\/]([a-z]|([0-9]*)+))*)?/g;
-		
 		// contenu input
 	        var text = cell.get_text();
-	        var valide = text.replace(valide_function_to_solve, "");
+
 		if(text.trim()!="")
 		{
 			var vars; // variables en string
@@ -99,30 +98,33 @@ function () {
 			var inputTab =[]; // cellule Unique dans un tab
 			var find; // permet de savoir si la variable est unique ou pas
 			var buttons = {} ;//Stocker les boutons dans la boite de dialog
-
-
+			
 			/*Création des variables*/
 			    vars = create_var(cell);
 				if(cell.output_area.outputs[0]!=undefined){
 	        			cell.output_area.clear_output();
 				}
-			/*Propositions des variables*/
-			 inputTab = variablesUnique(vars);
+			if(vars.length > 0){
+				/*Propositions des variables*/
+				 inputTab = variablesUnique(vars);
 
-			// On créé notre input
-			input = "<div class ='col-xs-12'><b>Choose the variable in order to solve :<br><center>"+text+"</center></b></div>";
+				// On créé notre input
+				input = "<div class ='col-xs-12'><b>Choose the variable in order to solve :<br><center>"+text+"</center></b></div>";
 		
-			// création des boutons
+				// création des boutons
 
-			var val = [];
-			for(i = 0 ; i < inputTab.length; i ++){
-				val[i] = inputTab[i];
-				buttons[val[i]] = factoryButtons(val[i],text,cell);	 
+				var val = [];
+				for(i = 0 ; i < inputTab.length; i ++){
+					val[i] = inputTab[i];
+					buttons[val[i]] = factoryButtons(val[i],text,cell);	 
+				}
+
+				// creation de la boite de dialog
+				var options = {height: 'auto',width: 'auto', buttons:buttons}
+				createDialog("Choose your variable",input,options);
+			}else{
+				alert("Formule non valide");			
 			}
-
-			// creation de la boite de dialog
-			var options = {height: 'auto',width: 'auto', buttons:buttons}
-			createDialog("Choose your variable",input,options);
 		}else{
 	        	alert("Formule non valide");
 		}
@@ -238,8 +240,8 @@ function () {
 			display_start_button();
 			//Display Advanced Button
 			display_button();
-			/*Affiche l' input de la cellule*/
-			click_on_button();	
+			/*Ajouter des events*/
+			add_event_on_notebook();	
 			// module activé		
 			boolean = true;
 		}
@@ -252,8 +254,8 @@ function () {
 			
 	} 
 	
-	/*Display input cel*/
-	var click_on_button = function(){
+	/*add event on a notebook*/
+	var add_event_on_notebook = function(){
 			//Permet de rafraichir le DOM et d'ajouter nos fonctionnalités
 	$("body").on('click','button[title =\"sageButtonFactor\"]', function() {
 			var cell = Jupyter.notebook.get_cell(Jupyter.notebook.get_selected_cells_indices());
@@ -296,8 +298,8 @@ function () {
 			//On Expand notre entrée
 			expand(cell);
 		});
-	};
 
+};
 	//Display Advanced Button
 	var display_button = function(){
 	// buttons
@@ -307,7 +309,7 @@ function () {
 		// check the focus
 		$('body').on('focusin', '.selected .input_area', function(){
 			// check if the sage butons is write
-				$('.unselected > div[title =\"sage\"').remove();		
+			$('.unselected > div[title =\"sage\"').remove();		
 			if($('.selected > div[title !=\"sage\"]')){
 				// supprimer div 
 				$('.selected > div[title =\"sage\"').remove();
