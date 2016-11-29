@@ -19,3 +19,22 @@ from notebook.services.config import ConfigManager
 cm = ConfigManager()
 # update with None, not False, to disable auto loading
 cm.update('notebook', {"load_extensions": {"sagedragon": None}})
+
+
+	ajouter (APREF[arbre]) lettres = 
+			case lettres of
+				(x:[]) -> add x arbre
+				(x:xs) -> ajouter (add x arbre) xs
+			where 
+			-- parcourir x pour trouver si la lettre existe déjà : si filter trouve un élément alors renvoyer la liste de cet élément sinon insérer
+			add tree lett = factory (filter (\(cara,code,arbreSuivant) -> cara == lett) tree) lett tree
+			get2 (a,b,c) = b
+			get3 (a,b,c) = c 
+			-- on get le code	
+			getLastCode = get2 $ head (reverse arbre) 				 
+			factory findLetter lett tree = 
+						if findLetter == [] 
+						then get3 head (reverse (tree : (lett,getLastCode + 1, APREF[])))
+						else get3 $ head findLetter
+								
+			   
